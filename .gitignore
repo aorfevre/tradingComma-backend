@@ -13,4 +13,3 @@ config/env-dev.json
 config/env-stage.json
 config/env-prod.json
 cloudrun-core-id.json
-config/env.json

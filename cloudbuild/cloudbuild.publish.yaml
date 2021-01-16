@@ -6,18 +6,7 @@ steps:
   args:
   - '-c'
   - |
-    npm ci
-# Use a specific image because we had an error: UnicodeEncodeError
-- name: 'gcr.io/cloud-builders/gcloud@sha256:635f9df4b4b227d8acb0f8d61e995ed7803b32cf3b0e1a069985d67809c64627'
-  id: 'Download bucketapi config'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-      gcloud config set project driven-current-269809 && \
-      gcloud secrets versions access latest --secret=bucketapi-config > config/env.json && \
-      cat config/env.json
-  waitFor:    ['-']
+    npm i
 
 # Build the containers images
 - name:       'gcr.io/cloud-builders/docker'
