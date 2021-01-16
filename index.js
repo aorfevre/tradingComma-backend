@@ -24,7 +24,7 @@ const fs = require('fs');
 // swagger definition
 var swaggerDefinition = {
   info: {
-    title: 'Bucket API',
+    title: 'TradComma API',
     version: '1.0.0',
     description: 'REST api generated',
   },
@@ -49,6 +49,7 @@ var options = {
   apis: ['./app/*.js']
 };
 var swaggerSpec = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 
