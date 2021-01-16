@@ -1,0 +1,16 @@
+/node_modules/
+/_archives/
+/cloudbuild/id_gcp_github.pub
+/cloudbuild/id_gcp_github
+.env
+/config/.env-dev
+/config/.env-stage
+/config/.env-prod
+config/.env-dev
+config/.env-stage
+config/.env-prod
+config/env-dev.json
+config/env-stage.json
+config/env-prod.json
+cloudrun-core-id.json
+config/env.json

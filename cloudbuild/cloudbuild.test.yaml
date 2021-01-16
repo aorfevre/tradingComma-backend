@@ -1,0 +1,14 @@
+steps:
+- name:       'node:12'
+  id:         Test
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    npm ci && \
+    npm run test
+
+# Build a test image
+- name:       'gcr.io/cloud-builders/docker'
+  id:         Build
+  args:       ['build', '-t', 'test-image', '.']

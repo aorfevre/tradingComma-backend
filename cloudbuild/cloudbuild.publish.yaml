@@ -1,0 +1,116 @@
+steps:
+# Run unit tests on the app
+- name:       'node:12'
+  id:         Test
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    npm i && \
+    npm run test
+
+- name: 'gcr.io/cloud-builders/gcloud@sha256:635f9df4b4b227d8acb0f8d61e995ed7803b32cf3b0e1a069985d67809c64627'
+  id: 'Download api-manager config'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+      gcloud config set project monamipoto-${_ENV} && \
+      gcloud secrets versions access latest --secret=eldoradoapimanager-config  > env.json && \
+      gcloud secrets versions access latest --secret=eldoradoapimanager-sqreen-config  > sqreen.json
+
+# Build and publish base image
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'Build publish eldoradoapimanager image'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+      docker build -f Dockerfile -t gcr.io/monamipoto-dev/base/eldoradoapimanager:$SHORT_SHA . && \
+      docker push gcr.io/monamipoto-dev/base/eldoradoapimanager:$SHORT_SHA
+
+
+# Deploy bot-ingest to Cloud run
+- name:       'gcr.io/cloud-builders/gcloud'
+  id:         Deploy api
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+     gcloud run deploy $$SERVICE_NAME \
+     --image gcr.io/monamipoto-dev/base/eldoradoapimanager:$SHORT_SHA \
+     --region europe-west1 \
+     --platform managed \
+     --allow-unauthenticated \
+     --service-account=core-service-cloud-run@monamipoto-dev.iam.gserviceaccount.com \
+     --vpc-connector vpc-cloud-run-dev
+  env:        ['SERVICE_NAME=eldoradoapimanager-dev']
+
+
+# # Deploy bot-ingest to app engine
+# - name:       'gcr.io/cloud-builders/gcloud'
+#   id:         Deploy api
+#   entrypoint: /bin/sh
+#   args:
+#   - '-c'
+#   - |
+#      gcloud app deploy app.yaml
+#   env:        ['SERVICE_NAME=eldoradoapimanager-dev']
+#
+
+
+
+#
+# # Decrypt github key and set up git config with key and domain
+# - name:       'gcr.io/cloud-builders/gcloud'
+#   id:         Decrypt github rsa key and set git config
+#   entrypoint: 'bash'
+#   args:
+#     - '-c'
+#     - |
+#       gcloud secrets versions access latest --secret=gcp_github > /root/.ssh/id_rsa && \
+#       chmod 600 /root/.ssh/id_rsa && \
+#       cat <<EOF >/root/.ssh/config
+#       Hostname github.com
+#       IdentityFile /root/.ssh/id_rsa
+#       EOF
+#       ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+#   volumes:
+#     - name:     'ssh'
+#       path:     /root/.ssh
+#
+# - name:       'gcr.io/cloud-builders/git'
+#   id:         clone and checkout candidate-dev
+#   entrypoint: /bin/sh
+#   args:
+#   - '-c'
+#   - |
+#     git clone git@github.com:monamipoto/eldoradoenv.git && \
+#     cd eldoradoenv && \
+#     git checkout candidate-dev && \
+#     git config user.email admin@monamipoto.com
+#   volumes:
+#   - name:     'ssh'
+#     path:     /root/.ssh
+#
+# # This step pushes cluster-ENV dirs to eldoradoenv/candidate-dev
+# - name:       'gcr.io/cloud-builders/gcloud'
+#   id:         Push image names
+#   entrypoint: /bin/sh
+#   args:
+#   - '-c'
+#   - |
+#     set -x && \
+#     cd eldoradoenv && \
+#     mkdir -p cluster-base && \
+#     echo "$SHORT_SHA" > cluster-base/$REPO_NAME.commit_id && \
+#     git add cluster-base/$REPO_NAME.commit_id && \
+#     git commit --allow-empty -m "New version $REPO_NAME commit ${COMMIT_SHA}
+#     Author:   admin@monamipoto.com" && \
+#     git push origin candidate-dev
+#   volumes:
+#   - name:     'ssh'
+#     path:     /root/.ssh
+options:
+  env:
+    - IMAGE_NAME=gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
