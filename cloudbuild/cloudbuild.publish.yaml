@@ -14,7 +14,6 @@ steps:
   entrypoint: /bin/sh
   args:       ['-c' , 'docker build -t $$IMAGE_NAME .']
 
-
 # Push the containers images to Container Registry
 - name:       'gcr.io/cloud-builders/docker'
   id:         Deploy dev image
@@ -33,4 +32,4 @@ steps:
 
 options:
   env:
-    - IMAGE_NAME=gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA
+    - IMAGE_NAME=gcr.io/$PROJECT_ID/tradcommas-backend:$SHORT_SHA
