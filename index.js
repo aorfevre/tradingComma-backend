@@ -14,7 +14,6 @@ const app = express()
 app.use(bodyParser.json());
 
 
-const port = env.PORT;
 var router = express.Router();
 
 var swaggerUi = require('swagger-ui-express')
@@ -55,6 +54,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 require("./app/router")(app);
 require("./app/clean-exit");
-const port = process.env.PORT || env.PORT;
+const port = env.PORT;
 
 app.listen(port, () => console.log(`Trading Comma Manager listening on port ${port}!`))
