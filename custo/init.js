@@ -13,6 +13,14 @@ module.exports.isAdminAd = function(msg) {
 
 
 }
+module.exports.stopBot = function(bot) {
+  if (bot.isPolling()) {
+    bot.stopPolling()
+  } else if (bot.hasOpenWebHook()) {
+    bot.closeWebHook()
+  }
+}
+
 module.exports.setTelegram = function() {
 
   var telegramToken = BOT_TOKEN_TELEGRAM_PROD

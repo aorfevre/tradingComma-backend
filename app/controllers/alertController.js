@@ -16,6 +16,7 @@ module.exports = {
         var bot = init.setTelegram();
 
         bot.sendMessage(TG_ADMIN, "New alert received")
+        init.stopBot(bot)
       })
 
     } catch (e) {
