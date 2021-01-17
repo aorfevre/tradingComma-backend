@@ -4,6 +4,7 @@ const {
   v4: uuidv4
 } = require('uuid');
 var _db = require('../database/mongo_db.js')
+var init = require('../../custo/init.js')
 
 
 
@@ -12,6 +13,8 @@ module.exports = {
     try {
       console.log("🟢", "POST", "/alert", req.body);
       _db.set('alert', uuidv4(), req.body.text, false).then(r => {
+        var bot = init.setTelegram();
+
         bot.sendMessage(TG_ADMIN, "New alert received")
       })
 
