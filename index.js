@@ -55,4 +55,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 require("./app/router")(app);
 require("./app/clean-exit");
+const port = process.env.PORT || env.PORT;
+
 app.listen(port, () => console.log(`Trading Comma Manager listening on port ${port}!`))

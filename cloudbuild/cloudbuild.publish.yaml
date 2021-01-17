@@ -22,7 +22,7 @@ steps:
 
 # Deploy bot-ingest to Cloud run
 - name:       'gcr.io/cloud-builders/gcloud'
-  id:         Deploy alphabackend
+  id:         Deploy tradcommas
   entrypoint: /bin/sh
   args:
   - '-c'
