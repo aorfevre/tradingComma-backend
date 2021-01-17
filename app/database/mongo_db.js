@@ -5,7 +5,7 @@ global._mdb = null;
 module.exports.init = function() {
 
   return new Promise(function(resolve, reject) {
-    var url = "tradCommas:2GMZQWTjQTgwRZk@cluster0.ntamx.mongodb.net/tradCommas?authMechanism=SCRAM-SHA-1";
+    var url = MONGODB_AUTH;
 
     console.log('url', url)
     if (_mdb === null)

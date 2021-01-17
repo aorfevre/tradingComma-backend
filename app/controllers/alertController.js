@@ -10,7 +10,7 @@ module.exports = {
     try {
       console.log("🟢", "POST", "/alert", req.body);
       _db.set('alert', uuid(), req.body.text, false).then(r => {
-        console.log('r', req.body)
+        bot.sendMessage(TG_ADMIN, "New alert received")
       })
 
     } catch (e) {
