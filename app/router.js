@@ -18,8 +18,6 @@ module.exports = function(app) {
    *     consumes:
    *       - application/json
    *     parameters:
-   *       - name: body
-   *         in: body
    *       - in : header
    *         name: Authorization
    *     responses:
@@ -31,6 +29,33 @@ module.exports = function(app) {
    *         description: Error While creating user
    */
   app.post("/user", UserController.createUser)
+
+
+  /**
+   * @swagger
+   * /user:
+   *   get:
+   *     tags:
+   *       - user
+   *     description: Create a Firebase user
+   *     produces:
+   *       - application/json
+   *     consumes:
+   *       - application/json
+   *     parameters:
+   *       - in : header
+   *         name: Authorization
+   *     responses:
+   *       200:
+   *         description: Get User
+   *       403:
+   *         description: Error While creating user
+   */
+  app.get("/user", UserController.getUser)
+
+
+
+
 
   /**
    * @swagger

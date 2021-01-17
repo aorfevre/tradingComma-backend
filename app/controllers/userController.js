@@ -36,5 +36,30 @@ module.exports = {
       })
     }
   },
+  getUser: function(req, res, next) {
+    try {
+      console.log("🟢", "GET", "/user", req.body);
+      helper.getUserConnected(req).then(u => {
+        const userTmp = helper.transformTokenToUser(u, req.body);
+        _db.find('user', {
+          _id: userTmp.firebase_uid
+        }, null, false).then(user => {
+          if (user.length === 1) {
+            res.status(200)
+            res.send(userTmp)
+          }
 
+        })
+
+
+      })
+    } catch (e) {
+      console.warn("🔴", 403, "/user", e);
+
+      res.status(403)
+      res.send({
+        error: 'Unexpected error'
+      })
+    }
+  }
 }
