@@ -14,7 +14,7 @@ const app = express()
 app.use(bodyParser.json());
 
 
-const port = process.env.PORT || env.PORT;
+const port = env.PORT;
 var router = express.Router();
 
 var swaggerUi = require('swagger-ui-express')
