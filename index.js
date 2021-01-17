@@ -5,6 +5,7 @@ var env = require('./config/env.json')
 var serviceAccount = env["FIREBASE_CREDENTIALS"]
 bodyParser = require('body-parser');
 
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });

@@ -39,23 +39,17 @@
         }
 
         return {
-          pub_key: body.pub_key,
           firebase_uid: u.uid,
           provider: u.firebase.sign_in_provider,
           firstname: firstname,
           lastname: lastname,
           nickname: firstname,
-          is_corp: false,
-          company_name: null,
-          company_address: null,
-          company_number: null,
           birth_date: moment().format('YYYY-MM-DD'),
-          desc: null,
           email: u.email,
           email_verified: u.email_verified,
           phone: u.phone || '',
           photo_url: u.picture || '',
-          type: body.type
+          role: 'user'
         }
       } catch (e) {
         return {
