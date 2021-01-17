@@ -1,7 +1,7 @@
 var helper = require('../helper')
 const axios = require('axios')
 const uuid = require('uuid')
-var _db = require('./app/database/mongo_db.js')
+var _db = require('../database/mongo_db.js')
 
 
 

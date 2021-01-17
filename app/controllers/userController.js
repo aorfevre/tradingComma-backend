@@ -1,6 +1,6 @@
 var helper = require('../helper')
 const axios = require('axios')
-var _db = require('./app/database/mongo_db.js')
+var _db = require('../database/mongo_db.js')
 
 
 
