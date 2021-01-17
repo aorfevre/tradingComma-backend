@@ -7,14 +7,15 @@ var _db = require('../database/mongo_db.js')
 var init = require('../../custo/init.js')
 
 
-
 module.exports = {
   createAlert: function(req, res, next) {
     try {
-      console.log("🟢", "POST", "/alert", req.body);
-      _db.set('alert', uuidv4(), req.body.text, false).then(r => {
-        var bot = init.setTelegram();
+      console.log("🟢", "POST", "/alert", req.body, uuidv4());
 
+      _db.set('alert', uuidv4(), req.body, false).then(r => {
+        console.log('post ok')
+
+        var bot = init.setTelegram();
         bot.sendMessage(TG_ADMIN, "New alert received")
         init.stopBot(bot)
       })

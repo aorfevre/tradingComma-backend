@@ -1,4 +1,5 @@
 var mongojs = require('mongojs')
+const MongoClient = require('mongodb').MongoClient;
 
 global._mdb = null;
 
@@ -7,13 +8,13 @@ module.exports.init = function() {
   return new Promise(function(resolve, reject) {
     var url = MONGODB_AUTH;
 
-    console.log('url', url)
     if (_mdb === null)
       _mdb = mongojs(url, ['users_participating'], {
         ssl: true
       })
 
-    console.log(_mdb)
+
+
     //
     // _mdb["users_participating_1"].getIndexes(function(r){
 
